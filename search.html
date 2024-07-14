@@ -1,0 +1,24 @@
+---
+layout: page
+title: Search
+permalink: /search/
+---
+
+<div class="search">
+  <input type="text" class="search-input" placeholder="Search...">
+  <ul class="results-container"></ul>
+</div>
+
+<script src="{{ "https://unpkg.com/simple-jekyll-search@latest/dest/simple-jekyll-search.min.js" | relative_url }}"></script>
+<script>
+  SimpleJekyllSearch({
+    searchInput: document.querySelector('.search-input'),
+    resultsContainer: document.querySelector('.results-container'),
+    json: '{{ '/search.json' | relative_url }}',
+    searchResultTemplate: '<li><a href="{url}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+  })
+</script>
