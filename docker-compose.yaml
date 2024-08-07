@@ -1,0 +1,8 @@
+services:
+  jekyll:
+    build: .
+    volumes:
+      - ./src:/usr/src/app
+      - ./_site:/usr/share/nginx/html
+    ports:
+      - "8999:80"

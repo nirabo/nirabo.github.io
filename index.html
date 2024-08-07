@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Argus Reader</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+
+    header {
+      padding: 20px;
+      background-color: #333;
+      color: white;
+    }
+
+    main {
+      display: flex;
+      flex-grow: 1;
+      overflow: hidden;
+    }
+
+    aside, section, footer {
+      padding: 20px;
+    }
+
+    aside {
+      width: 250px;
+      background-color: #fff;
+      border-right: 1px solid #ddd;
+    }
+
+    section {
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #fff;
+      border-top: 1px solid #ddd;
+    }
+
+    .news-item {
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+      cursor: pointer;
+    }
+
+    .news-item:hover {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Argus Reader</h1>
+</header>
+
+<main>
+  <aside id="sidebar">
+    <!-- User profile and source management will go here -->
+    <div>
+      <h3>Sources</h3>
+      <!-- Sources list with counters for new/unread content -->
+      <ul id="sources"></ul>
+    </div>
+  </aside>
+
+  <section id="news-feed">
+    <!-- Aggregated content will be displayed here -->
+    <div class="news-item" data-id="1">
+      <h2>Sample Article</h2>
+      <p><small>Source: Sample News</small></p>
+      <p>Summary: This is a sample article...</p>
+      <span class="relevance-score">Relevance Score: 85%</span>
+    </div>
+    <!-- More news items will be added dynamically -->
+  </section>
+</main>
+
+<footer id="nli-bar">
+  <!-- Natural Language Interaction (NLI) field and response -->
+  <input type="text" id="nli-input" placeholder="Type your query/feedback here...">
+  <div id="nli-response"></div>
+  <button id="clear-history">Clear History</button>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    // Initialize sample sources and news items
+    const sources = ['Source 1', 'Source 2'];
+    const newsItems = [
+      { id: 1, title: 'Sample Article', summary: 'This is a sample article...' },
+      // Add more sample articles here...
+    ];
+
+    function updateNewsFeed() {
+      $('#news-feed').empty();
+      newsItems.forEach(item => {
+        $('#news-feed').append(`
+          <div class="news-item" data-id="${item.id}">
+            <h2>${item.title}</h2>
+            <p><small>Source: Sample News</small></p>
+            <p>${item.summary}</p>
+            <span class="relevance-score">Relevance Score: 85%</span>
+          </div>
+        `);
+      });
+    }
+
+    function updateSourcesList() {
+      $('#sources').empty();
+      sources.forEach(source => {
+        $('#sources').append(`
+          <li>${source} (0 new)</li>
+        `);
+      });
+    }
+
+    // Update UI with sample data
+    updateNewsFeed();
+    updateSourcesList();
+
+    // Event listeners for interactivity
+    $(document).on('click', '.news-item', function () {
+      const id = $(this).data('id');
+      // Process the clicked news item using NLI and update nli-response
+      $('#nli-response').text(`Processing query for article ID ${id}...`);
+    });
+
+    $('#clear-history').click(function () {
+      // Clear NLI history
+      $('#nli-response').empty();
+    });
+  });
+</script>
+
+</body>
+</html>
