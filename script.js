@@ -206,32 +206,37 @@ function reloadConfig() {
 }
 
 function handleKeyDown(event) {
-    if ((event.key === 'Enter' || event.keyCode === 13) && !event.shiftKey) {
-        event.preventDefault();
-        const input = inputElement.value.trim();
-        if (input) {
-            displayOutput(`$ ${input}`);
-            commandHistory.push(input);
-            historyIndex = commandHistory.length;
-            handleCommand(input);
-            if (input.startsWith('config-url')) {
-                setTimeout(reloadConfig, 1500);
+    switch (event.key) {
+        case 'Enter':
+            if (!event.shiftKey) {
+                event.preventDefault();
+                const input = inputElement.value.trim();
+                if (input) {
+                    displayOutput(`$ ${input}`);
+                    commandHistory.push(input);
+                    historyIndex = commandHistory.length;
+                    handleCommand(input);
+                }
+                inputElement.value = '';
             }
-        }
-        inputElement.value = '';
-    } else if (event.key === 'ArrowUp' || event.keyCode === 38) {
-        if (historyIndex > 0) {
-            historyIndex -= 1;
-            inputElement.value = commandHistory[historyIndex];
-        }
-    } else if (event.key === 'ArrowDown') {
-        if (historyIndex < commandHistory.length - 1) {
-            historyIndex += 1;
-            inputElement.value = commandHistory[historyIndex];
-        } else {
-            inputElement.value = '';
-            historyIndex = commandHistory.length;
-        }
+            break;
+        case 'ArrowUp':
+            event.preventDefault();
+            if (historyIndex > 0) {
+                historyIndex -= 1;
+                inputElement.value = commandHistory[historyIndex];
+            }
+            break;
+        case 'ArrowDown':
+            event.preventDefault();
+            if (historyIndex < commandHistory.length - 1) {
+                historyIndex += 1;
+                inputElement.value = commandHistory[historyIndex];
+            } else {
+                inputElement.value = '';
+                historyIndex = commandHistory.length;
+            }
+            break;
     }
 }
 
