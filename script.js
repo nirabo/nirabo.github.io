@@ -13,13 +13,31 @@ async function loadConfig() {
         const configUrl = localStorage.getItem('portfolio_config_url');
         if (configUrl) {
             try {
-                const response = await fetch(configUrl);
+                const response = await fetch(configUrl, {
+                    method: 'GET',
+                    mode: 'cors',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
                 if (response.ok) {
-                    config = await response.json();
-                    return;
+                    const text = await response.text();
+                    try {
+                        config = JSON.parse(text);
+                        displayOutput("Successfully loaded configuration from: " + configUrl);
+                        return;
+                    } catch (parseError) {
+                        console.error('Failed to parse config JSON:', parseError);
+                        displayOutput("Error: Invalid JSON in external configuration", false);
+                    }
+                } else {
+                    console.error('Failed to load config:', response.status, response.statusText);
+                    displayOutput(`Error loading configuration: ${response.status} ${response.statusText}`, false);
                 }
             } catch (e) {
-                console.warn('Failed to load external config:', e);
+                console.error('Failed to load external config:', e);
+                displayOutput("Error: Could not load external configuration. Check console for details.", false);
             }
         }
 
@@ -196,8 +214,13 @@ function scrollToBottom() {
     outputElement.scrollTop = outputElement.scrollHeight;
 }
 
+function reloadConfig() {
+    displayOutput("Reloading configuration...");
+    window.location.reload();
+}
+
 function handleKeyDown(event) {
-    if (event.key === 'Enter' || event.keyCode === 13) {
+    if ((event.key === 'Enter' || event.keyCode === 13) && !event.shiftKey) {
         event.preventDefault();
         const input = inputElement.value.trim();
         if (input) {
@@ -205,6 +228,9 @@ function handleKeyDown(event) {
             commandHistory.push(input);
             historyIndex = commandHistory.length;
             handleCommand(input);
+            if (input.startsWith('config-url')) {
+                setTimeout(reloadConfig, 1500);
+            }
         }
         inputElement.value = '';
     } else if (event.key === 'ArrowUp' || event.keyCode === 38) {

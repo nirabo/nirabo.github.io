@@ -1,0 +1,60 @@
+{
+    "meta": {
+        "version": "1.0.0",
+        "last_updated": "2024-01-03"
+    },
+    "about": {
+        "name": "Lyuboslav Petrov",
+        "role": "Full Stack Researcher",
+        "skills": [
+            "Python Development",
+            "Computer Vision (OpenCV, YOLO)",
+            "Machine Learning (TensorFlow, PyTorch)",
+            "Web Frameworks (Django, Flask)",
+            "Software Architecture",
+            "Technical Leadership",
+            "English",
+            "German"
+        ],
+        "bio": "Full Stack Researcher with extensive experience in industrial R&D, computer vision, machine learning, and software development. MSc in Complex Systems Simulations from the University of Southampton."
+    },
+    "contact": {
+        "email": "petrov.lyuboslav@gmail.com",
+        "linkedin": "linkedin.com/in/lyuboslav-petrov-1521343b",
+        "github": "github.com/nirabo"
+    },
+    "projects": [
+        {
+            "name": "Lithography Systems Backup",
+            "description": "Designed, developed, and maintained automated backup solutions for a global lithography systems provider",
+            "technologies": ["Python", "Software Architecture", "Industrial Systems"],
+            "period": "2015-2024",
+            "role": "Technical Lead & Architect at Strypes LTD"
+        },
+        {
+            "name": "SportsNet",
+            "description": "AI-powered sports analysis platform for real-time performance tracking and analytics",
+            "technologies": ["Computer Vision", "Machine Learning", "Python"],
+            "period": "2024-present",
+            "role": "Lead Developer"
+        },
+        {
+            "name": "Welding Control Systems",
+            "description": "Developed control systems for innovative welding machines",
+            "technologies": ["Industrial Control", "System Design"],
+            "period": "2015",
+            "organization": "Torgoterm AD"
+        }
+    ],
+    "education": {
+        "degree": "Master of Science",
+        "field": "Complex Systems Simulations",
+        "institution": "University of Southampton",
+        "period": "2011-2012"
+    },
+    "commands": {
+        "help": "Available commands:\\n - help: List all commands\\n - about: Display personal information\\n - projects: List all projects\\n - project [name]: Show project details\\n - contact: Display contact information\\n - skills: List technical skills\\n - education: Show educational background\\n - clear: Clear the terminal\\n - ls: List available sections",
+        "ls": "Sections:\\n - About\\n - Projects\\n - Contact\\n - Skills\\n - Education"
+    },
+    "ascii_art": "    ╔══════════════════════════════════╗\\n    ║     Lyuboslav Petrov             ║\\n    ║     Full Stack Researcher        ║\\n    ║     Type 'help' to explore       ║\\n    ╚══════════════════════════════════╝"
+}
