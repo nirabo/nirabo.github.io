@@ -1,65 +1,96 @@
+import config from './config.js';
+
 const terminalElement = document.getElementById('terminal');
 const outputElement = document.getElementById('output');
 const inputElement = document.getElementById('command-input');
 
-const commands = {
-    help: "Available commands:\n - help: List all commands\n - projects: List all projects\n - project [name]: Show details of a specific project\n - about: Display personal information\n - contact: Display contact information\n - clear: Clear the terminal\n - ls: List available sections/pages",
-    projects: "Projects:\n - project1\n - project2\n - project3",
-    about: "About:\n - Name: John Doe\n - Skills: JavaScript, Python, Linux, Software Architecture",
-    contact: "Contact:\n - Email: johndoe@example.com\n - LinkedIn: linkedin.com/in/johndoe",
-    ls: "Sections:\n - About\n - Projects\n - Contact",
-};
-
-const projectDetails = {
-    project1: "Project1: A web application built with React.",
-    project2: "Project2: A machine learning model for predictive analysis.",
-    project3: "Project3: A terminal-style portfolio website.",
-};
-
 let commandHistory = [];
 let historyIndex = -1;
 
-const easterEggArt = `
-       __
-      /  \\
-     |    |
-      \\__/
-     /    \\
-    |      |
-    |      |
-     \\____/
-     (____)
-`;
+// Initialize with welcome message
+window.addEventListener('DOMContentLoaded', () => {
+    if (config.ascii_art) {
+        displayOutput(config.ascii_art);
+    }
+    displayOutput(`Welcome to ${config.about.name}'s terminal portfolio! Type 'help' for available commands.`);
+});
 
-commands.easteregg = "Easter Egg discovered! Here's a little surprise:\n" + easterEggArt;
+// Format projects list
+const getProjectsList = () => {
+    return "Projects:\n" + config.projects
+        .map(p => ` - ${p.name}: ${p.description}`)
+        .join('\n');
+};
+
+// Format about information
+const getAboutInfo = () => {
+    return `About:\n` +
+           ` - Name: ${config.about.name}\n` +
+           ` - Role: ${config.about.role}\n` +
+           ` - Bio: ${config.about.bio}`;
+};
+
+// Format contact information
+const getContactInfo = () => {
+    return "Contact:\n" + Object.entries(config.contact)
+        .map(([platform, value]) => ` - ${platform}: ${value}`)
+        .join('\n');
+};
+
+// Format skills list
+const getSkillsList = () => {
+    return "Skills:\n" + config.about.skills
+        .map(skill => ` - ${skill}`)
+        .join('\n');
+};
+
+// Get project details
+const getProjectDetails = (projectName) => {
+    const project = config.projects.find(p => 
+        p.name.toLowerCase() === projectName.toLowerCase()
+    );
+    
+    if (!project) return null;
+    
+    return `Project: ${project.name}\n` +
+           `Description: ${project.description}\n` +
+           `Technologies: ${project.technologies.join(', ')}\n` +
+           `Link: ${project.link}`;
+};
 
 function handleCommand(input) {
-    const [command, arg] = input.split(' ');
+    const [command, ...args] = input.toLowerCase().split(' ');
+    const arg = args.join(' ');
 
     switch (command) {
         case 'help':
-            displayOutput(commands.help);
+            displayOutput(config.commands.help);
             break;
         case 'projects':
-            displayOutput(commands.projects);
+            displayOutput(getProjectsList());
             break;
         case 'project':
-            displayOutput(projectDetails[arg] || "Error: Project not found.", !!projectDetails[arg]);
+            if (!arg) {
+                displayOutput("Error: Please specify a project name.", false);
+                break;
+            }
+            const projectInfo = getProjectDetails(arg);
+            displayOutput(projectInfo || "Error: Project not found.", !!projectInfo);
             break;
         case 'about':
-            displayOutput(commands.about);
+            displayOutput(getAboutInfo());
             break;
         case 'contact':
-            displayOutput(commands.contact);
+            displayOutput(getContactInfo());
+            break;
+        case 'skills':
+            displayOutput(getSkillsList());
             break;
         case 'clear':
             clearTerminal();
             break;
         case 'ls':
-            displayOutput(commands.ls);
-            break;
-        case 'easteregg': // New Easter Egg command
-            displayOutput(commands.easteregg);
+            displayOutput(config.commands.ls);
             break;
         default:
             displayOutput("Error: Command not recognized. Type 'help' for a list of commands.", false);
