@@ -1,56 +1,66 @@
-// Copy this file to config.js and update with your information
-// config.js will be ignored by git to keep your personal data private
+// This is a template configuration file.
+// For local development: Copy to config.js and customize
+// For production: Host your config file externally and use the config-url command
 
 const config = {
+    // Site metadata
+    meta: {
+        version: "1.0.0",
+        template_repo: "https://github.com/nirabo/nirabo.github.io",
+        last_updated: new Date().toISOString()
+    },
     about: {
-        name: "Your Name",
-        role: "Your Role/Title",
+        name: "Terminal Portfolio",
+        role: "Interactive CLI Portfolio Template",
         skills: [
-            "Skill 1",
-            "Skill 2",
-            "Skill 3"
+            "HTML/CSS/JavaScript",
+            "Git Version Control",
+            "ES Modules",
+            "Local Storage",
+            "Async/Await",
+            "Error Handling"
         ],
-        bio: "A brief bio about yourself"
+        bio: "A modern, configurable portfolio template that mimics a terminal interface. Supports multiple configuration methods while keeping your personal data private."
     },
     contact: {
-        email: "your.email@example.com",
-        linkedin: "linkedin.com/in/yourusername",
-        github: "github.com/yourusername",
-        // Add other contact methods
+        github: "github.com/nirabo/nirabo.github.io",
+        template: "Use 'config-url' command to load your contact info",
+        example: "config-url https://your-config-url.json"
     },
     projects: [
         {
-            name: "Project 1",
-            description: "Description of your first project",
-            technologies: ["Tech1", "Tech2"],
-            link: "https://project1.example.com",
-            // Add other project details
+            name: "External Config",
+            description: "Load your portfolio data from any hosted JSON file",
+            technologies: ["GitHub Gist", "JSON", "LocalStorage"],
+            link: "See config-url command"
         },
         {
-            name: "Project 2",
-            description: "Description of your second project",
-            technologies: ["Tech1", "Tech2"],
-            link: "https://project2.example.com",
+            name: "Local Config",
+            description: "Develop locally with a private config.js file",
+            technologies: ["ES Modules", "Git"],
+            link: "See config.template.js"
         }
     ],
-    // Customize available commands
     commands: {
         help: "Available commands:\n" +
               " - help: List all commands\n" +
-              " - about: Display personal information\n" +
+              " - about: Display information\n" +
               " - projects: List all projects\n" +
-              " - project [name]: Show details of a specific project\n" +
-              " - contact: Display contact information\n" +
+              " - project [name]: Show project details\n" +
+              " - contact: Display contact info\n" +
               " - skills: List technical skills\n" +
+              " - config-url [url]: Set external config URL\n" +
               " - clear: Clear the terminal\n" +
               " - ls: List available sections",
-        ls: "Sections:\n - About\n - Projects\n - Contact\n - Skills"
+        ls: "Sections:\n - About\n - Projects\n - Contact\n - Skills\n - Configuration"
     },
-    // Optional: Custom ASCII art for your terminal
     ascii_art: `
-    Your custom
-    ASCII art
-    here
+    ╔════════════════════════════════════╗
+    ║     Terminal Portfolio Template     ║
+    ║                                    ║
+    ║  Type 'help' to get started        ║
+    ║  Use 'config-url' to personalize   ║
+    ╚════════════════════════════════════╝
     `
 };
 

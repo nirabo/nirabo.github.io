@@ -1,21 +1,48 @@
-# Terminal Portfolio
+# Terminal Portfolio Template
 
-A customizable terminal-style portfolio website that can be easily personalized without exposing your private information in the repository.
+A customizable terminal-style portfolio website template with flexible configuration options. This template supports multiple ways to personalize your portfolio while keeping your private information secure.
 
-## Setup
+## Quick Start
 
-1. Clone the repository:
+### Option 1: Use as a Template Repository (Recommended)
+1. Click "Use this template" at the top of this repository
+2. Name your new repository `yourusername.github.io`
+3. Clone your new repository:
 ```bash
 git clone https://github.com/yourusername/yourusername.github.io.git
 cd yourusername.github.io
 ```
 
-2. Create your personal configuration:
+### Option 2: Fork and Configure
+1. Fork this repository
+2. Rename it to `yourusername.github.io`
+3. Clone your fork
+
+## Configuration Options
+
+You have three ways to configure your portfolio:
+
+### 1. Local Configuration (Private Development)
 ```bash
 cp config.template.js config.js
 ```
+Edit `config.js` with your information. This file is git-ignored and won't be pushed to your repository.
 
-3. Edit `config.js` with your personal information:
+### 2. External Configuration (Recommended for Production)
+Host your configuration file anywhere (e.g., Gist, personal server) and use the `config-url` command:
+```
+config-url https://your-config-url.json
+```
+
+Example hosting options:
+- GitHub Gist (public or secret)
+- Personal server/CDN
+- Static file hosting service
+
+### 3. Template Configuration
+If no local or external configuration is found, the site falls back to the template configuration.
+
+## Configuration Structure
 - Update your name, role, and bio in the `about` section
 - Add your contact information
 - List your skills
@@ -23,7 +50,7 @@ cp config.template.js config.js
 - Customize available commands
 - (Optional) Add your custom ASCII art
 
-The `config.js` file is ignored by git, so your personal information remains private and won't be pushed to the repository.
+Your configuration file (whether local, external, or template) should follow this structure:
 
 ## Local Development
 

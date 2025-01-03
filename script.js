@@ -1,19 +1,62 @@
-import config from './config.js';
-
 const terminalElement = document.getElementById('terminal');
 const outputElement = document.getElementById('output');
 const inputElement = document.getElementById('command-input');
 
 let commandHistory = [];
 let historyIndex = -1;
+let config = null;
 
-// Initialize with welcome message
-window.addEventListener('DOMContentLoaded', () => {
+// Attempt to load configuration from multiple sources
+async function loadConfig() {
+    try {
+        // Try loading from external source first (e.g., Gist, personal server)
+        const configUrl = localStorage.getItem('portfolio_config_url');
+        if (configUrl) {
+            try {
+                const response = await fetch(configUrl);
+                if (response.ok) {
+                    config = await response.json();
+                    return;
+                }
+            } catch (e) {
+                console.warn('Failed to load external config:', e);
+            }
+        }
+
+        // Try loading local config.js
+        try {
+            const localConfig = await import('./config.js');
+            config = localConfig.default;
+            return;
+        } catch (e) {
+            console.warn('No local config.js found:', e);
+        }
+
+        // Fallback to template config
+        const templateConfig = await import('./config.template.js');
+        config = templateConfig.default;
+        
+        // Show configuration notice
+        displayOutput("⚠️ Using template configuration. To personalize:");
+        displayOutput("1. Edit config.js locally, or");
+        displayOutput("2. Use 'config-url [url]' to load external configuration");
+    } catch (e) {
+        console.error('Failed to load any configuration:', e);
+        displayOutput("Error: Failed to load configuration. Please check console.", false);
+    }
+}
+
+// Initialize terminal
+async function initializeTerminal() {
+    await loadConfig();
     if (config.ascii_art) {
         displayOutput(config.ascii_art);
     }
     displayOutput(`Welcome to ${config.about.name}'s terminal portfolio! Type 'help' for available commands.`);
-});
+}
+
+// Initialize when DOM is ready
+window.addEventListener('DOMContentLoaded', initializeTerminal);
 
 // Format projects list
 const getProjectsList = () => {
@@ -62,7 +105,26 @@ function handleCommand(input) {
     const [command, ...args] = input.toLowerCase().split(' ');
     const arg = args.join(' ');
 
+    // Ensure config is loaded
+    if (!config) {
+        displayOutput("Error: Configuration not loaded. Please refresh the page.", false);
+        return;
+    }
+
     switch (command) {
+        case 'config-url':
+            if (!arg) {
+                displayOutput("Current config URL: " + (localStorage.getItem('portfolio_config_url') || 'Using local config'));
+                break;
+            }
+            try {
+                new URL(arg); // Validate URL
+                localStorage.setItem('portfolio_config_url', arg);
+                displayOutput("Config URL updated. Refresh the page to load new configuration.");
+            } catch {
+                displayOutput("Error: Invalid URL provided.", false);
+            }
+            break;
         case 'help':
             displayOutput(config.commands.help);
             break;
