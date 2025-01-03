@@ -25,7 +25,6 @@ async function loadConfig() {
                 const text = await response.text();
                 try {
                     config = JSON.parse(text);
-                    displayOutput("Successfully loaded configuration from Gist");
                     return;
                 } catch (parseError) {
                     console.error('Failed to parse config JSON:', parseError);
@@ -53,10 +52,18 @@ async function loadConfig() {
 // Initialize terminal
 async function initializeTerminal() {
     await loadConfig();
+    // Clear any previous content
+    clearTerminal();
+    
     if (config.ascii_art) {
-        displayOutput(config.ascii_art);
+        // Display ASCII art banner without timestamp
+        const lines = config.ascii_art.replace(/\\n/g, '\n').split('\n');
+        lines.forEach(line => {
+            outputElement.innerHTML += `<div>${line}</div>`;
+        });
     }
-    displayOutput(`Welcome to ${config.about.name}'s terminal portfolio! Type 'help' for available commands.`);
+    // Add welcome message without timestamp
+    outputElement.innerHTML += `<div>Welcome to ${config.about.name}'s terminal portfolio! Type 'help' for available commands.</div>`;
 }
 
 // Initialize when DOM is ready
@@ -182,11 +189,19 @@ function displayOutput(text, success = true) {
     const formattedText = text.replace(/\\n/g, '\n').split('\n').map(line => line.trim()).join('\n');
     const lines = formattedText.split('\n');
     
+    // Check if this is ASCII art (contains box drawing characters)
+    const isAsciiArt = lines.some(line => line.match(/[║╔╗╚╝═]/));
+    
     lines.forEach((line, index) => {
-        // Only add timestamp to first line
-        // Calculate padding based on timestamp format [HH:MM:SS PM]
-        const prefix = index === 0 ? `[${timestamp}] ` : ' '.repeat('[00:00:00 PM] '.length);
-        outputElement.innerHTML += `<div class="${success ? '' : 'error'}">${prefix}${line}</div>`;
+        if (isAsciiArt) {
+            // For ASCII art, only add timestamp to first line, no padding for others
+            const prefix = index === 0 ? `[${timestamp}] ` : '';
+            outputElement.innerHTML += `<div class="${success ? '' : 'error'}">${prefix}${line}</div>`;
+        } else {
+            // For normal text, add timestamp or padding
+            const prefix = index === 0 ? `[${timestamp}] ` : ' '.repeat('[00:00:00 PM] '.length);
+            outputElement.innerHTML += `<div class="${success ? '' : 'error'}">${prefix}${line}</div>`;
+        }
     });
     
     scrollToBottom();
