@@ -1,0 +1,56 @@
+body {
+    margin: 0;
+    font-family: monospace;
+    background-color: #0d0d0d;
+    color: #00ff00;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+#terminal {
+    width: 90%;
+    max-width: 800px;
+    height: 90%;
+    max-height: 600px;
+    background-color: #1a1a1a;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    overflow-y: auto;
+}
+
+#output {
+    white-space: pre-wrap;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+#input-line {
+    display: flex;
+    align-items: center;
+}
+
+.prompt {
+    margin-right: 5px;
+}
+
+#command-input {
+    background: none;
+    border: none;
+    color: #00ff00;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    width: 100%;
+}
+
+.hidden {
+    display: none;
+}
+
+.error {
+    color: #ff4444;
+}
