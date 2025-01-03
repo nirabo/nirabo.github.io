@@ -6,23 +6,14 @@ let commandHistory = [];
 let historyIndex = -1;
 let config = null;
 
-// Load configuration from environment variable
+import { CONFIG_URL } from './config.js';
+
+// Load configuration from config.js
 async function loadConfig() {
     try {
-        const configUrl = window.PORTFOLIO_CONFIG_URL;
-        if (!configUrl) {
-            // Load template config and show instructions
-            const templateConfig = await import('./config.template.js');
-            config = templateConfig.default;
-            displayOutput("⚠️ No configuration URL set. To personalize:");
-            displayOutput("1. Copy .env.example to .env");
-            displayOutput("2. Set PORTFOLIO_CONFIG_URL in .env to your Gist URL");
-            displayOutput("3. Run the build script before deploying");
-            return;
-        }
 
         try {
-            const response = await fetch(configUrl, {
+            const response = await fetch(CONFIG_URL, {
                 method: 'GET',
                 mode: 'cors',
                 headers: {
@@ -34,7 +25,7 @@ async function loadConfig() {
                 const text = await response.text();
                 try {
                     config = JSON.parse(text);
-                    displayOutput("Successfully loaded configuration from: " + configUrl);
+                    displayOutput("Successfully loaded configuration from Gist");
                     return;
                 } catch (parseError) {
                     console.error('Failed to parse config JSON:', parseError);
