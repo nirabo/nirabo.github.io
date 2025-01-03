@@ -184,7 +184,8 @@ function displayOutput(text, success = true) {
     
     lines.forEach((line, index) => {
         // Only add timestamp to first line
-        const prefix = index === 0 ? `[${timestamp}] ` : '                   ';
+        // Calculate padding based on timestamp format [HH:MM:SS PM]
+        const prefix = index === 0 ? `[${timestamp}] ` : ' '.repeat('[00:00:00 PM] '.length);
         outputElement.innerHTML += `<div class="${success ? '' : 'error'}">${prefix}${line}</div>`;
     });
     
