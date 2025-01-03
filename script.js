@@ -178,8 +178,16 @@ function handleCommand(input) {
 
 function displayOutput(text, success = true) {
     const timestamp = new Date().toLocaleTimeString();
-    const line = `[${timestamp}] ${text}`;
-    outputElement.innerHTML += `<div class="${success ? '' : 'error'}">${line}</div>`;
+    // Replace escaped newlines with actual newlines and handle indentation
+    const formattedText = text.replace(/\\n/g, '\n').split('\n').map(line => line.trim()).join('\n');
+    const lines = formattedText.split('\n');
+    
+    lines.forEach((line, index) => {
+        // Only add timestamp to first line
+        const prefix = index === 0 ? `[${timestamp}] ` : '                   ';
+        outputElement.innerHTML += `<div class="${success ? '' : 'error'}">${prefix}${line}</div>`;
+    });
+    
     scrollToBottom();
 }
 
