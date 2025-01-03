@@ -61,7 +61,7 @@ window.addEventListener('DOMContentLoaded', initializeTerminal);
 // Format projects list
 const getProjectsList = () => {
     return "Projects:\n" + config.projects
-        .map(p => ` - ${p.name}: ${p.description}`)
+        .map(p => ` - ${p.name} (${p.period}): ${p.description}`)
         .join('\n');
 };
 
@@ -87,6 +87,16 @@ const getSkillsList = () => {
         .join('\n');
 };
 
+// Format education information
+const getEducationInfo = () => {
+    const edu = config.education;
+    return `Education:\n` +
+           ` - Degree: ${edu.degree}\n` +
+           ` - Field: ${edu.field}\n` +
+           ` - Institution: ${edu.institution}\n` +
+           ` - Period: ${edu.period}`;
+};
+
 // Get project details
 const getProjectDetails = (projectName) => {
     const project = config.projects.find(p => 
@@ -95,10 +105,19 @@ const getProjectDetails = (projectName) => {
     
     if (!project) return null;
     
-    return `Project: ${project.name}\n` +
-           `Description: ${project.description}\n` +
-           `Technologies: ${project.technologies.join(', ')}\n` +
-           `Link: ${project.link}`;
+    let details = `Project: ${project.name}\n` +
+                 `Period: ${project.period}\n` +
+                 `Description: ${project.description}\n` +
+                 `Technologies: ${project.technologies.join(', ')}`;
+
+    if (project.role) {
+        details += `\nRole: ${project.role}`;
+    }
+    if (project.organization) {
+        details += `\nOrganization: ${project.organization}`;
+    }
+    
+    return details;
 };
 
 function handleCommand(input) {
@@ -148,6 +167,9 @@ function handleCommand(input) {
         case 'skills':
             displayOutput(getSkillsList());
             break;
+        case 'education':
+            displayOutput(getEducationInfo());
+            break;
         case 'clear':
             clearTerminal();
             break;
@@ -158,7 +180,6 @@ function handleCommand(input) {
             displayOutput("Error: Command not recognized. Type 'help' for a list of commands.", false);
     }
 }
-
 
 function displayOutput(text, success = true) {
     const timestamp = new Date().toLocaleTimeString();
@@ -176,7 +197,8 @@ function scrollToBottom() {
 }
 
 function handleKeyDown(event) {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' || event.keyCode === 13) {
+        event.preventDefault();
         const input = inputElement.value.trim();
         if (input) {
             displayOutput(`$ ${input}`);
@@ -185,7 +207,7 @@ function handleKeyDown(event) {
             handleCommand(input);
         }
         inputElement.value = '';
-    } else if (event.key === 'ArrowUp') {
+    } else if (event.key === 'ArrowUp' || event.keyCode === 38) {
         if (historyIndex > 0) {
             historyIndex -= 1;
             inputElement.value = commandHistory[historyIndex];
