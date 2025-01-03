@@ -1,0 +1,24 @@
+{
+  "name": "terminal-portfolio",
+  "version": "1.0.0",
+  "description": "A terminal-style portfolio website with configuration via GitHub Gist",
+  "scripts": {
+    "build": "node build.js",
+    "start": "python3 -m http.server 8080"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nirabo/nirabo.github.io.git"
+  },
+  "keywords": [
+    "portfolio",
+    "terminal",
+    "github-pages"
+  ],
+  "author": "Lyuboslav Petrov",
+  "license": "MIT"
+}

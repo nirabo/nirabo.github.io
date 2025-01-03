@@ -6,17 +6,18 @@ let commandHistory = [];
 let historyIndex = -1;
 let config = null;
 
-// Load configuration from remote URL
+// Load configuration from environment variable
 async function loadConfig() {
     try {
-        const configUrl = localStorage.getItem('portfolio_config_url');
+        const configUrl = window.PORTFOLIO_CONFIG_URL;
         if (!configUrl) {
             // Load template config and show instructions
             const templateConfig = await import('./config.template.js');
             config = templateConfig.default;
             displayOutput("⚠️ No configuration URL set. To personalize:");
-            displayOutput("1. Create a Gist with your configuration (use config.template.js as reference)");
-            displayOutput("2. Use 'config-url [your-gist-raw-url]' to load your configuration");
+            displayOutput("1. Copy .env.example to .env");
+            displayOutput("2. Set PORTFOLIO_CONFIG_URL in .env to your Gist URL");
+            displayOutput("3. Run the build script before deploying");
             return;
         }
 
@@ -144,17 +145,8 @@ function handleCommand(input) {
 
     switch (command) {
         case 'config-url':
-            if (!arg) {
-                displayOutput("Current config URL: " + (localStorage.getItem('portfolio_config_url') || 'Using local config'));
-                break;
-            }
-            try {
-                new URL(arg); // Validate URL
-                localStorage.setItem('portfolio_config_url', arg);
-                displayOutput("Config URL updated. Refresh the page to load new configuration.");
-            } catch {
-                displayOutput("Error: Invalid URL provided.", false);
-            }
+            displayOutput("Configuration URL is set at build time through .env file", false);
+            displayOutput("Current URL: " + (window.PORTFOLIO_CONFIG_URL || 'Not set'));
             break;
         case 'help':
             displayOutput(config.commands.help);

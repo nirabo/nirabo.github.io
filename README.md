@@ -1,6 +1,6 @@
 # Terminal Portfolio
 
-A terminal-style portfolio website template that loads your personal data from a GitHub Gist, keeping your information private while maintaining a clean, reusable template.
+A terminal-style portfolio website template that loads your personal data from a GitHub Gist at build time, keeping your information private while maintaining a clean, reusable template.
 
 ## Quick Start
 
@@ -8,6 +8,7 @@ A terminal-style portfolio website template that loads your personal data from a
    ```bash
    git clone https://github.com/nirabo/nirabo.github.io.git
    cd nirabo.github.io
+   npm install
    ```
 
 2. Create your configuration:
@@ -17,15 +18,39 @@ A terminal-style portfolio website template that loads your personal data from a
    - Make sure to select "JSON" as the file type
    - Save the Gist and copy its "Raw" URL
 
-3. Deploy to GitHub Pages:
+3. Set up configuration:
+   ```bash
+   cp .env.example .env
+   ```
+   Edit .env and set your Gist URL:
+   ```
+   PORTFOLIO_CONFIG_URL=your-gist-raw-url
+   ```
+
+4. Build and deploy:
+   ```bash
+   npm run build
+   ```
    - Rename your repository to `yourusername.github.io`
    - Push to GitHub
-   - Visit your site at `https://yourusername.github.io`
-   - Use the command `config-url your-gist-raw-url` to load your configuration
+   - Your site will be available at `https://yourusername.github.io`
 
-## Example Configuration
+## Development
 
-See `config.template.js` for the configuration structure. Here's what to customize:
+1. Start local server:
+   ```bash
+   npm start
+   ```
+   This will serve the site at http://localhost:8080
+
+2. Making changes:
+   - Update your Gist with new information
+   - Run `npm run build` to update the configuration
+   - Test locally before deploying
+
+## Configuration Structure
+
+The `config.template.js` shows the expected structure. Here's what to customize:
 - Update your name, role, and bio in the `about` section
 - Add your contact information
 - List your skills
