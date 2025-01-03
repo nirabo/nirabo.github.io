@@ -6,58 +6,52 @@ let commandHistory = [];
 let historyIndex = -1;
 let config = null;
 
-// Attempt to load configuration from multiple sources
+// Load configuration from remote URL
 async function loadConfig() {
     try {
-        // Try loading from external source first (e.g., Gist, personal server)
         const configUrl = localStorage.getItem('portfolio_config_url');
-        if (configUrl) {
-            try {
-                const response = await fetch(configUrl, {
-                    method: 'GET',
-                    mode: 'cors',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-                
-                if (response.ok) {
-                    const text = await response.text();
-                    try {
-                        config = JSON.parse(text);
-                        displayOutput("Successfully loaded configuration from: " + configUrl);
-                        return;
-                    } catch (parseError) {
-                        console.error('Failed to parse config JSON:', parseError);
-                        displayOutput("Error: Invalid JSON in external configuration", false);
-                    }
-                } else {
-                    console.error('Failed to load config:', response.status, response.statusText);
-                    displayOutput(`Error loading configuration: ${response.status} ${response.statusText}`, false);
-                }
-            } catch (e) {
-                console.error('Failed to load external config:', e);
-                displayOutput("Error: Could not load external configuration. Check console for details.", false);
-            }
-        }
-
-        // Try loading local config.js
-        try {
-            const localConfig = await import('./config.js');
-            config = localConfig.default;
+        if (!configUrl) {
+            // Load template config and show instructions
+            const templateConfig = await import('./config.template.js');
+            config = templateConfig.default;
+            displayOutput("⚠️ No configuration URL set. To personalize:");
+            displayOutput("1. Create a Gist with your configuration (use config.template.js as reference)");
+            displayOutput("2. Use 'config-url [your-gist-raw-url]' to load your configuration");
             return;
-        } catch (e) {
-            console.warn('No local config.js found:', e);
         }
 
-        // Fallback to template config
+        try {
+            const response = await fetch(configUrl, {
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                const text = await response.text();
+                try {
+                    config = JSON.parse(text);
+                    displayOutput("Successfully loaded configuration from: " + configUrl);
+                    return;
+                } catch (parseError) {
+                    console.error('Failed to parse config JSON:', parseError);
+                    displayOutput("Error: Invalid JSON in configuration", false);
+                }
+            } else {
+                console.error('Failed to load config:', response.status, response.statusText);
+                displayOutput(`Error loading configuration: ${response.status} ${response.statusText}`, false);
+            }
+        } catch (e) {
+            console.error('Failed to load configuration:', e);
+            displayOutput("Error: Could not load configuration. Check console for details.", false);
+        }
+
+        // Fallback to template if remote load fails
         const templateConfig = await import('./config.template.js');
         config = templateConfig.default;
-        
-        // Show configuration notice
-        displayOutput("⚠️ Using template configuration. To personalize:");
-        displayOutput("1. Edit config.js locally, or");
-        displayOutput("2. Use 'config-url [url]' to load external configuration");
+        displayOutput("⚠️ Using template configuration due to load error.", false);
     } catch (e) {
         console.error('Failed to load any configuration:', e);
         displayOutput("Error: Failed to load configuration. Please check console.", false);

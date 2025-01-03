@@ -1,48 +1,31 @@
-# Terminal Portfolio Template
+# Terminal Portfolio
 
-A customizable terminal-style portfolio website template with flexible configuration options. This template supports multiple ways to personalize your portfolio while keeping your private information secure.
+A terminal-style portfolio website template that loads your personal data from a GitHub Gist, keeping your information private while maintaining a clean, reusable template.
 
 ## Quick Start
 
-### Option 1: Use as a Template Repository (Recommended)
-1. Click "Use this template" at the top of this repository
-2. Name your new repository `yourusername.github.io`
-3. Clone your new repository:
-```bash
-git clone https://github.com/yourusername/yourusername.github.io.git
-cd yourusername.github.io
-```
+1. Use this template:
+   ```bash
+   git clone https://github.com/nirabo/nirabo.github.io.git
+   cd nirabo.github.io
+   ```
 
-### Option 2: Fork and Configure
-1. Fork this repository
-2. Rename it to `yourusername.github.io`
-3. Clone your fork
+2. Create your configuration:
+   - Copy the content of `config.template.js`
+   - Create a new GitHub Gist
+   - Paste and modify the configuration with your information
+   - Make sure to select "JSON" as the file type
+   - Save the Gist and copy its "Raw" URL
 
-## Configuration Options
+3. Deploy to GitHub Pages:
+   - Rename your repository to `yourusername.github.io`
+   - Push to GitHub
+   - Visit your site at `https://yourusername.github.io`
+   - Use the command `config-url your-gist-raw-url` to load your configuration
 
-You have three ways to configure your portfolio:
+## Example Configuration
 
-### 1. Local Configuration (Private Development)
-```bash
-cp config.template.js config.js
-```
-Edit `config.js` with your information. This file is git-ignored and won't be pushed to your repository.
-
-### 2. External Configuration (Recommended for Production)
-Host your configuration file anywhere (e.g., Gist, personal server) and use the `config-url` command:
-```
-config-url https://your-config-url.json
-```
-
-Example hosting options:
-- GitHub Gist (public or secret)
-- Personal server/CDN
-- Static file hosting service
-
-### 3. Template Configuration
-If no local or external configuration is found, the site falls back to the template configuration.
-
-## Configuration Structure
+See `config.template.js` for the configuration structure. Here's what to customize:
 - Update your name, role, and bio in the `about` section
 - Add your contact information
 - List your skills
